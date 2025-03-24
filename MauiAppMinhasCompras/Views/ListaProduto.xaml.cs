@@ -50,19 +50,22 @@ public partial class ListaProduto : ContentPage
     {
         try
         {
-            string q = e.NewTextValue;
+            string q = e.NewTextValue.ToLower(); 
 
-            lista.Clear();
+            lista.Clear(); 
 
-            List<Produto> tmp = await App.Db.Search(q);
+            List<Produto> tmp = await App.Db.GetAll(); 
 
-            tmp.ForEach(i => lista.Add(i));
+            var filtrados = tmp.Where(p => p.Descricao.ToLower().Contains(q)).ToList(); // Filtra os produtos pelo nome
+
+            filtrados.ForEach(i => lista.Add(i)); // Atualiza a ObservableCollection com os produtos filtrados
         }
         catch (Exception ex)
         {
-           await DisplayAlert("Ops!", ex.Message, "OK");
+            await DisplayAlert("Ops!", ex.Message, "OK");
         }
     }
+
 
     private void ToolbarItem_Clicked_1(object sender, EventArgs e)
     {
