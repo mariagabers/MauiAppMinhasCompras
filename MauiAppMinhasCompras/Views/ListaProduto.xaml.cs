@@ -150,5 +150,26 @@ public partial class ListaProduto : ContentPage
 
     }
 
-   
+    private async void picker_filtro_categoria_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        string categoriaSelecionada = picker_filtro_categoria.SelectedItem?.ToString();
+
+        if (categoriaSelecionada == "Todos")
+        {
+            lst_produtos.ItemsSource = await App.Db.GetAll();
+        }
+        else
+        {
+            lst_produtos.ItemsSource = await App.Db.FiltrarPorCategoria(categoriaSelecionada);
+        }
+    }
+
+    private async void ToolbarItem_Clicked_Relatorio(object sender, EventArgs e)
+    {
+        await Navigation.PushAsync(new RelatorioCategoria());
+    }
+
+
+
+
 }
